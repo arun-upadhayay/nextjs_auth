@@ -1,7 +1,7 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from  'bcryptjs';
+import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
 connect();
 
@@ -19,18 +19,18 @@ export async function POST(request: NextRequest) {
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-    const newUser = new User({ username, email, password: hashedPassword })
-    const savedUser = await newUser.save()
+    const newUser = new User({ username, email, password: hashedPassword });
+    const savedUser = await newUser.save();
     console.log(savedUser);
 
     // send verification  mail to the registered user id
-await sendEmail({email,emailTyp:"VERIFY", userId:savedUser._id})
-return NextResponse.json({
-    message: `A Verification Mail has been sent to your Email Address and User Registerd  Successfully`,
+    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
+    return NextResponse.json({
+      message: `A Verification Mail has been sent to your Email Address and User Registerd  Successfully`,
 
-    success: true,
-    savedUser
-})
+      success: true,
+      savedUser,
+    });
 
     return new Response("User Created Successfully", { status: 201 });
   } catch (error: any) {

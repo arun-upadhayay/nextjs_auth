@@ -28,8 +28,9 @@ export async function POST(request: NextRequest) {
         username: user.username,
         email: user.email,
     }
-    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!,{ expiresIn: "1d"});
+    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!,{ expiresIn: "1d"});
 
+console.log("token nii a rha h ",token);
 
     const response = NextResponse.json({
         message:"Login Successfully!",
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         status: false,
-        message: "Internal Server Error",
+        message: "Internal Server Error and  Please Try Again Later! unable to login" + error,
       },
       { status: 500 }
     );
